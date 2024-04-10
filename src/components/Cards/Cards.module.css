@@ -67,6 +67,20 @@
   font-style: normal;
   font-weight: 400;
   line-height: 32px;
-
   margin-bottom: -12px;
 }
+
+
+.attemptСounter {
+  display: flex;
+  gap: 10px;
+  color: red;
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: StratosSkyeng;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 30px;
+}
+
+
