@@ -40,7 +40,7 @@ function getTimerValue(startDate, endDate) {
  * pairsCount - сколько пар будет в игре
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
-export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+export function Cards({ pairsCount = 3, previewSeconds = 5, isGameMode }) {
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
@@ -56,6 +56,13 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     seconds: 0,
     minutes: 0,
   });
+
+  // Стейт для счетчика попыток
+  const [numberOfAttempts, setNumberOfAttempts] = useState(2);
+  const takeAwayTheAttempt = () => {
+    setNumberOfAttempts(numberOfAttempts - 1);
+    console.log(numberOfAttempts);
+  };
 
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
@@ -73,6 +80,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
+    setNumberOfAttempts(2);
   }
 
   /**
@@ -126,11 +134,25 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     const playerLost = openCardsWithoutPair.length >= 2;
 
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
-    if (playerLost) {
-      finishGame(STATUS_LOST);
-      return;
-    }
 
+    if (isGameMode === "true") {
+      if (playerLost) {
+        takeAwayTheAttempt();
+        if (numberOfAttempts < 1) {
+          finishGame(STATUS_LOST);
+          return;
+        } else {
+          setTimeout(() => {
+            setCards(cards.map(card => (openCardsWithoutPair.includes(card) ? { ...card, open: false } : card)));
+          }, 1000);
+        }
+      }
+    } else {
+      if (playerLost) {
+        finishGame(STATUS_LOST);
+        return;
+      }
+    }
     // ... игра продолжается
   };
 
@@ -195,7 +217,25 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </>
           )}
         </div>
-        {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
+
+        {status === STATUS_IN_PROGRESS ? (
+          <>
+            {isGameMode === "true" ? (
+              <div className={styles.attemptСounter}>
+                <svg width="30" height="26" viewBox="0 0 30 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M14.53 3.27849C12.6964 1.22519 10.2335 0.000124665 8.08277 0.000124664C4.40879 0.000124663 0.183699 2.06893 -8.96305e-08 8.27535C0.170897 14.3992 6.86026 19.5464 13.2644 24.474C13.7441 24.8432 14.2223 25.2111 14.696 25.5781C14.696 25.5781 14.696 25.5781 14.696 25.578C14.6961 25.5781 14.6961 25.5781 14.6961 25.5781C14.9305 25.3965 15.1655 25.2147 15.4009 25.0326C21.9912 19.9345 28.8473 14.6309 29.0247 8.27535C28.841 2.06893 24.2485 0.00012207 20.5745 0.00012207C18.4238 0.00012207 16.169 1.22519 14.53 3.27849Z"
+                    fill="#FF4545"
+                  />
+                </svg>
+                <div>{numberOfAttempts + 1}</div>
+              </div>
+            ) : null}
+            <Button onClick={resetGame}>Начать заново</Button>
+          </>
+        ) : null}
       </div>
 
       <div className={styles.cards}>
