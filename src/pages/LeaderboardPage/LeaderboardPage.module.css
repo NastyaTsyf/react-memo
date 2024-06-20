@@ -61,4 +61,9 @@
     line-height: 32px;
 }
 
+.achievementsIcons{
+    display: flex;
+    gap: 6px;
+}
+
 

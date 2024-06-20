@@ -8,15 +8,18 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { addLeaders } from "../../api";
 
-export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
+export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick, achievementsArr }) {
+  console.log(achievementsArr);
+  isWon = true;
   const { isGameMode } = useParams();
   const { pairsCount } = useParams();
   const navigate = useNavigate();
   const gameSeconds = gameDurationMinutes * 60 + gameDurationSeconds;
-  console.log(gameSeconds);
+
   const [userData, setuserData] = useState({
     name: " ",
     time: gameSeconds,
+    achievements: achievementsArr,
   });
 
   const handleInputChange = e => {
