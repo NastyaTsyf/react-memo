@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.tooltip {
+    margin-top: 170px;
+    font-family: StratosSkyeng;
+    font-size: 18px;
+    font-style: normal;
+    position: absolute;
+    padding: 20px;
+    justify-content: center;
+    color: #004980;
+    background-color: #C2F5FF;
+    border-radius: 12px;
+    text-align: center;
+    white-space: pre-line;
+    font-weight: 400;
+    pointer-events: none;
+    z-index: 2;
+    max-height: 223px;
+}

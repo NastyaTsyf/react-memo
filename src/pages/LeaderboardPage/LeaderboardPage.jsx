@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { getLeaders } from "../../api";
 import { Button } from "../../components/Button/Button";
 import { useNavigate } from "react-router-dom";
-import { achievementsIcons } from "../../lib";
+import { achievementsIcons, achievementsText } from "../../lib";
+import { ToolTipComponent } from "../../components/Tooltip/Tooltip";
 
 export function LeaderboardPage() {
   const [leaders, setLeaders] = useState([]);
@@ -40,14 +41,18 @@ export function LeaderboardPage() {
                 <div># {i++}</div>
                 <div>{leader.name}</div>
                 <div className={styles.achievementsIcons}>
-                  <div>
-                    {leader.achievements.includes(1) ? achievementsIcons.hardModeActive : achievementsIcons.hardMode}
-                  </div>
-                  <div>
-                    {leader.achievements.includes(2)
-                      ? achievementsIcons.withoutSuperPowersActive
-                      : achievementsIcons.withoutSuperPowers}
-                  </div>
+                  <ToolTipComponent text={achievementsText.hardMode}>
+                    <div>
+                      {leader.achievements.includes(1) ? achievementsIcons.hardModeActive : achievementsIcons.hardMode}
+                    </div>
+                  </ToolTipComponent>
+                  <ToolTipComponent text={achievementsText.withoutSuperPowers}>
+                    <div>
+                      {leader.achievements.includes(2)
+                        ? achievementsIcons.withoutSuperPowersActive
+                        : achievementsIcons.withoutSuperPowers}
+                    </div>
+                  </ToolTipComponent>
                 </div>
                 <div>
                   {Math.trunc(leader.time / 60)
