@@ -5,8 +5,6 @@ import { Cards } from "../../components/Cards/Cards";
 export function GamePage() {
   const { pairsCount } = useParams();
   const { isGameMode } = useParams();
-  console.log(isGameMode);
-  console.log(pairsCount);
 
   return (
     <>
